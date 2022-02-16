@@ -1,111 +1,43 @@
-var trex, trex_running, trex_collided;
-var ground, invisibleGround, groundImage;
-
-var cloud, cloudsGroup, cloudImage;
-
-
-
-var newImage;
+var sea,ship;
+var seaImg,shipImg;
 
 function preload(){
-  trex_running = loadAnimation("trex1.png","trex3.png","trex4.png");
-  trex_collided = loadAnimation("trex_collided.png");
-  
-  groundImage = loadImage("ground2.png");
-  
-  cloudImage = loadImage("cloud.png");
- obs1=loadImage("obstacle1.png")
- obs2=loadImage("obstacle2.png")
- obs3=loadImage("obstacle3.png")
- obs4=loadImage("obstacle4.png")
- obs5=loadImage("obstacle5.png")
- obs6=loadImage("obstacle6.png")
+  seaImg = loadImage("sea.png");
+  shipImg1=loadAnimation("sea.png")
+//Choose the correct option by uncommenting the right line to load the animation for ship.
+  shipImg1 = loadAnimation("ship-1.png","ship-1.png","ship-2.png","ship-1.png");
+  //shipImg1 = loadAnimation("ship-1","ship-1","ship-2","ship-1");
+  //shipImg1 = loadAnimation("1.png","2.png","3.png","4.png");
+
 }
 
-function setup() {
-  createCanvas(600, 200);
+function setup(){
+  createCanvas(400,400);
+  background("blue");
 
-  trex = createSprite(50,160,20,50);
-  trex.addAnimation("running", trex_running);
-  // trex.addAnimation("collided",trex_collided)
-  trex.scale = 0.5;
+  // Moving background
+  sea=createSprite(400,200);
+  sea.addImage(seaImg);
+  sea.scale=0.3;
+
   
-  ground = createSprite(200,180,400,20);
-  ground.addImage("ground",groundImage);
-  ground.x = ground.width /2;
-  ground.velocityX = -4;
-  
-  invisibleGround = createSprite(200,190,400,10);
-  invisibleGround.visible = false;
-  
-  console.log("Hello"+ 5)
+  ship = createSprite(130,200,30,30);
+  ship.addAnimation("movingShip",shipImg1);
+  ship.scale =0.25;
   
 }
 
 function draw() {
-  background(180);
+  background(0);
   
+//Uncomment the correct line to make the background move to create a forward moving effect for the boat.
+  //sea.velocityY = -3;
+  //sea.x = -3;
+  sea.velocityX = -3;
+  //sea.velocityX = 3;
   
-  if(keyDown("space")&& trex.y >= 100) {
-    trex.velocityY = -10;
-  }
+
   
-  trex.velocityY = trex.velocityY + 0.8
-  
-  if (ground.x < 0){
-    ground.x = ground.width/2;
-  }
-  
-  trex.collide(invisibleGround);
-  
-  //spawn the clouds
-  spawnClouds();
-  spawnobs()
-  
+    
   drawSprites();
-}
-
-function spawnClouds() {
-  //write code here to spawn the clouds
-  if (frameCount % 60 === 0) {
-    cloud = createSprite(600,100,40,10);
-    cloud.addImage(cloudImage)
-    cloud.y = Math.round(random(10,60))
-    cloud.scale = 0.4;
-    cloud.velocityX = -3;
-    
-    
-    //assigning lifetime to the variable
-    cloud.lifetime = 200
-    
-    //adjust the depth
-    cloud.depth = trex.depth
-    trex.depth = trex.depth + 1;
-    }
-}
-
-function spawnobs(){
-if(frameCount % 60 === 0){
-var obs=createSprite(600,165,10,10)
-obs.velocityX=-3
-obs.lifetime=200
-var randomobs=Math.round(random(1,6))
-obs.scale=0.5;
-switch(randomobs){
-  case 1:obs.addImage(obs1)
-  break
-  case 2:obs.addImage(obs2)
-  break
-  case 3:obs.addImage(obs3)
-  break
-  case 4:obs.addImage(obs4)
-  break
-  case 5:obs.addImage(obs5)
-  break
-  case 6:obs.addImage(obs6)
-  break
- default:break
-
-}
-}
 }
